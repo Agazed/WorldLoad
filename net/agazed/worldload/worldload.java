@@ -1,9 +1,11 @@
 package net.agazed.worldload;
 
 import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +26,7 @@ public class worldload extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		Player player = (Player) sender;
 		
-	                        //WorldLoad Help
+	            //WorldLoad Help
 		
 		        if(cmd.getName().equalsIgnoreCase("worldload") && player.isOp()){
 			        if(args.length == 0){
@@ -61,13 +63,23 @@ public class worldload extends JavaPlugin {
 				    if(args.length == 1) {
 				        player.sendMessage("/worldload create <world>");
 				} else {
-				    player.sendMessage("§aPreparing level \"" + args[1] + "\"");
-				    List<String> worldlist = this.getConfig().getStringList("worldlist");
-				    worldlist.add(args[1]);
-				    getConfig().set("worldlist", worldlist);
-				    saveConfig();
-				    new WorldCreator(args[1]).createWorld();
-				    player.sendMessage("§aSuccessfully created world \"" + args[1] + "\"");
+				    if(args.length == 2) {
+				    	player.sendMessage("§aPreparing level \"" + args[1] + "\"");
+					List<String> worldlist = this.getConfig().getStringList("worldlist");
+					worldlist.add(args[1]);
+					getConfig().set("worldlist", worldlist);
+					saveConfig();
+				        new WorldCreator(args[1]).createWorld();
+				        player.sendMessage("§aSuccessfully created world \"" + args[1] + "\"");
+				    } else if(args[2].equalsIgnoreCase("-flat")) {
+				    	player.sendMessage("§aPreparing flat level \"" + args[1] + "\"");
+					List<String> worldlist = this.getConfig().getStringList("worldlist");
+					worldlist.add(args[1]);
+					getConfig().set("worldlist", worldlist);
+					saveConfig();
+				    	new WorldCreator(args[1]).type(WorldType.FLAT).createWorld();
+				        player.sendMessage("§aSuccessfully created flat world \"" + args[1] + "\"");
+				        }
 				    }
 				    
 				//WorldLoad Load    
@@ -92,9 +104,9 @@ public class worldload extends JavaPlugin {
 				    getConfig().set("worldlist", worldlist);
 				    saveConfig();
 				    player.sendMessage("§aSuccessfully removed world \"" + args[1] + "\"");
+				    }
 				}
 			}
-		}
 				return false;
+		}
 	}
-}
