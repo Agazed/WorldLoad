@@ -1,0 +1,9 @@
+# Put the world name you want to load or generate below
+# Made with love by Agazed :)
+# Please check out mc.skylair.net for a great server!
+# Example:
+# worldlist:
+# - testworld
+# - testworld2
+# - testworld3
+worldlist:

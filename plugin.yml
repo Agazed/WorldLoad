@@ -1,0 +1,11 @@
+name: WorldLoad
+author: Agazed
+description: Load or generate a world
+website: skylair.net
+main: net.agazed.worldload.worldload
+version: 1.0
+
+commands:
+  worldload:
+    description: Help page for worldload
+    aliases: [wl, worldl]
