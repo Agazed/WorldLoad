@@ -28,21 +28,21 @@ public class worldload extends JavaPlugin {
 		
 		        if(cmd.getName().equalsIgnoreCase("worldload") && player.isOp()){
 			        if(args.length == 0){
-				        player.sendMessage("----- §3§lWorldLoad Help §f-----");
-				        player.sendMessage("§3/worldload §7tp <world> §f- Teleport to a world");
-				        player.sendMessage("§3/worldload §7create <world> §f- Create a standard world");
-				        player.sendMessage("§3/worldload §7load <world> §f- Load a world for one time use");
-				        player.sendMessage("§3/worldload §7remove <world> §f- Remove a world");
+				        player.sendMessage("----- Â§3Â§lWorldLoad Help Â§f-----");
+				        player.sendMessage("Â§3/worldload Â§7tp <world> Â§f- Teleport to a world");
+				        player.sendMessage("Â§3/worldload Â§7create <world> Â§f- Create a standard world");
+				        player.sendMessage("Â§3/worldload Â§7load <world> Â§f- Load a world for one time use");
+				        player.sendMessage("Â§3/worldload Â§7remove <world> Â§f- Remove a world");
 				} else if(args[0].equalsIgnoreCase("help")){
-					player.sendMessage("----- §3§lWorldLoad Help §f-----");
-					player.sendMessage("§3/worldload §7tp <world> §f- Teleport to a world");
-					player.sendMessage("§3/worldload §7create <world> §f- Create a standard world");
-					player.sendMessage("§3/worldload §7load <world> §f- Load a world for one time use");
-					player.sendMessage("§3/worldload §7remove <world> §f- Remove a world");
+					player.sendMessage("----- Â§3Â§lWorldLoad Help Â§f-----");
+					player.sendMessage("Â§3/worldload Â§7tp <world> Â§f- Teleport to a world");
+					player.sendMessage("Â§3/worldload Â§7create <world> Â§f- Create a standard world");
+					player.sendMessage("Â§3/worldload Â§7load <world> Â§f- Load a world for one time use");
+					player.sendMessage("Â§3/worldload Â§7remove <world> Â§f- Remove a world");
 					    
 			    //WorldLoad TP
 					    
-		        } else if(args[0].equalsIgnoreCase("tp")){
+		                } else if(args[0].equalsIgnoreCase("tp")){
 				    if(args.length == 1) {
 				        player.sendMessage("/worldload tp <world>");
 				        } else if(player.getServer().getWorld(args[1]) == null){
@@ -52,7 +52,7 @@ public class worldload extends JavaPlugin {
 				    Location a = new Location(world, 0, 0, 0);
 				    Location b = new Location(world, 0, world.getHighestBlockYAt(a), 0);
 				    player.teleport(b);
-				    player.sendMessage("§aTeleported to world \"" + args[1] + "\"");
+				    player.sendMessage("Â§aTeleported to world \"" + args[1] + "\"");
 				    }
 				    
 				//WorldLoad Create
@@ -61,13 +61,13 @@ public class worldload extends JavaPlugin {
 				    if(args.length == 1) {
 				        player.sendMessage("/worldload create <world>");
 				} else {
-				    player.sendMessage("§aPreparing level \"" + args[1] + "\"");
+				    player.sendMessage("Â§aPreparing level \"" + args[1] + "\"");
 				    List<String> worldlist = this.getConfig().getStringList("worldlist");
 				    worldlist.add(args[1]);
 				    getConfig().set("worldlist", worldlist);
 				    saveConfig();
 				    new WorldCreator(args[1]).createWorld();
-				    player.sendMessage("§aSuccessfully created world \"" + args[1] + "\"");
+				    player.sendMessage("Â§aSuccessfully created world \"" + args[1] + "\"");
 				    }
 				    
 				//WorldLoad Load    
@@ -76,9 +76,9 @@ public class worldload extends JavaPlugin {
 				    if(args.length == 1) {
 				        player.sendMessage("/worldload load <world>");
 				} else {
-				    player.sendMessage("§aLoading level \"" + args[1] + "\"");
+				    player.sendMessage("Â§aLoading level \"" + args[1] + "\"");
 				    new WorldCreator(args[1]).createWorld();
-				    player.sendMessage("§aSuccessfully loaded world \"" + args[1] + "\"");
+				    player.sendMessage("Â§aSuccessfully loaded world \"" + args[1] + "\"");
 					}
 				    
 				//WorldLoad Remove    
@@ -91,7 +91,7 @@ public class worldload extends JavaPlugin {
 				    worldlist.remove(args[1]);
 				    getConfig().set("worldlist", worldlist);
 				    saveConfig();
-				    player.sendMessage("§aSuccessfully removed world \"" + args[1] + "\"");
+				    player.sendMessage("Â§aSuccessfully removed world \"" + args[1] + "\"");
 				}
 			}
 		}
