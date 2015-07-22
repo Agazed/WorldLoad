@@ -24,7 +24,7 @@ public class worldload extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		Player player = (Player) sender;
 		
-	            //WorldLoad Help
+	                        //WorldLoad Help
 		
 		        if(cmd.getName().equalsIgnoreCase("worldload") && player.isOp()){
 			        if(args.length == 0){
@@ -40,7 +40,7 @@ public class worldload extends JavaPlugin {
 					player.sendMessage("§3/worldload §7load <world> §f- Load a world for one time use");
 					player.sendMessage("§3/worldload §7remove <world> §f- Remove a world");
 					    
-			    //WorldLoad TP
+			        //WorldLoad TP
 					    
 		                } else if(args[0].equalsIgnoreCase("tp")){
 				    if(args.length == 1) {
