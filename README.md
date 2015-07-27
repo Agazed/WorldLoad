@@ -26,4 +26,3 @@ Permissions:
 TODO:
 
 * Permission nodes
-* /worldload list
