@@ -1,11 +1,32 @@
 name: WorldLoad
 author: Agazed
-description: Load or generate a world
-website: skylair.net
-main: net.agazed.worldload.worldload
-version: 1.0
-
+description: Load or generate a custom defined world
+website: http://www.skylair.net
+main: net.agazed.worldload.WorldLoad
+version: 1.6
 commands:
   worldload:
-    description: Help page for worldload
+    description: Main command for WorldLoad
     aliases: [wl, worldl]
+permissions:
+    worldload.help:
+        description: Displays help page
+        default: op
+    worldload.tp:
+        description: Teleport to another world
+        default: op
+    worldload.create:
+        description: Create a world
+        default: op
+    worldload.create.flat:
+        description: Create a flat world
+        default: op
+    worldload.load:
+        description: Load a world
+        default: op
+    worldload.remove:
+        description: Remove a world from the worldlist
+        default: op
+    worldload.list:
+        description: List your worlds
+        default: op
