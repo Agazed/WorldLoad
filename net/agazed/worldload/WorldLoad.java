@@ -24,7 +24,11 @@ public class WorldLoad extends JavaPlugin {
     new WorldCreator(worlds).createWorld();
     }
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player player = (Player) sender;
+        if(!(sender instanceof Player)) {
+            System.out.println("Command can only be run in-game.");
+            return true;
+            }
+    Player player = (Player) sender;
                 
                 //WorldLoad Help
                 
@@ -32,21 +36,21 @@ public class WorldLoad extends JavaPlugin {
                     if(args.length == 0) {
                         player.sendMessage("/worldload help");
                         return true;
-                    }
+                        }
                 if(args[0].equalsIgnoreCase("help")) {
                     if(!player.hasPermission("worldload.help")) {
                         player.sendMessage("No permission");
                         return true;
-                    }
-                    player.sendMessage("----- §3§lWorldLoad Help §f-----");
-                    player.sendMessage("§3/worldload §7help §f- Displays this page");
-                    player.sendMessage("§3/worldload §7tp <world> §f- Teleport to a world");
-                    player.sendMessage("§3/worldload §7create <world> [-flat] §f- Create a standard world");
-                    player.sendMessage("§3/worldload §7load <world> §f- Load a world for one time use");
-                    player.sendMessage("§3/worldload §7remove <world> §f- Remove a world");
-                    player.sendMessage("§3/worldload §7list §f- List your worlds");
-                    return true;
-                    }
+                        }
+                        player.sendMessage("----- §3§lWorldLoad Help §f-----");
+                        player.sendMessage("§3/worldload §7help §f- Displays this page");
+                        player.sendMessage("§3/worldload §7tp <world> §f- Teleport to a world");
+                        player.sendMessage("§3/worldload §7create <world> [-flat] §f- Create a standard world");
+                        player.sendMessage("§3/worldload §7load <world> §f- Load a world for one time use");
+                        player.sendMessage("§3/worldload §7remove <world> §f- Remove a world");
+                        player.sendMessage("§3/worldload §7list §f- List your worlds");
+                        return true;
+                        }
                         
                 //WorldLoad TP
                         
@@ -54,22 +58,22 @@ public class WorldLoad extends JavaPlugin {
                     if(!player.hasPermission("worldload.tp")) {
                         player.sendMessage("No permission");
                         return true;
-                    }
+                        }
                     if(args.length == 1) {
                         player.sendMessage("/worldload tp <world>");
                         return true;
-                    }
+                        }
                     if(player.getServer().getWorld(args[1]) == null) {
-                        player.sendMessage("Invalid world name");
+                        player.sendMessage("Invalid world name or world not loaded");
                         return true;
-                    }
-                    World world = player.getServer().getWorld(args[1]);            
-                    Location a = new Location(world, 0, 0, 0);
-                    Location b = new Location(world, 0, world.getHighestBlockYAt(a), 0);
-                    player.teleport(b);
-                    player.sendMessage("§aTeleported to world \"" + args[1] + "\"");
-                    return true;
-                    }
+                        }
+                        World world = player.getServer().getWorld(args[1]);            
+                        Location a = new Location(world, 0, 0, 0);
+                        Location b = new Location(world, 0, world.getHighestBlockYAt(a), 0);
+                        player.teleport(b);
+                        player.sendMessage("§aTeleported to world \"" + args[1] + "\"");
+                        return true;
+                        }
                 
                 //WorldLoad Create
                 
@@ -84,18 +88,18 @@ public class WorldLoad extends JavaPlugin {
                         }
                     if(args.length == 2) {
                         List<String> worldlist = this.getConfig().getStringList("worldlist");
-                        if(worldlist.contains(args[1])) {
+                    if(worldlist.contains(args[1])) {
                             player.sendMessage("World already exists");
                             return true;
                             }
-                        player.sendMessage("§aPreparing level \"" + args[1] + "\"");
-                        worldlist.add(args[1]);
-                        getConfig().set("worldlist", worldlist);
-                        saveConfig();
-                        new WorldCreator(args[1]).createWorld();
-                        player.sendMessage("§aSuccessfully created world \"" + args[1] + "\"");
-                        return true;
-                        }
+                            player.sendMessage("§aPreparing level \"" + args[1] + "\"");
+                            worldlist.add(args[1]);
+                            getConfig().set("worldlist", worldlist);
+                            saveConfig();
+                            new WorldCreator(args[1]).createWorld();
+                            player.sendMessage("§aSuccessfully created world \"" + args[1] + "\"");
+                            return true;
+                            }
                     if(args[2].equalsIgnoreCase("-flat")) {
                         if(!player.hasPermission("worldload.create.flat")) {
                             player.sendMessage("No permission");
@@ -110,7 +114,7 @@ public class WorldLoad extends JavaPlugin {
                         worldlist.add(args[1]);
                         getConfig().set("worldlist", worldlist);
                         saveConfig();
-                        new WorldCreator(args[1]).type(WorldType.FLAT).createWorld();
+                        new WorldCreator(args[1]).type(WorldType.FLAT).generateStructures(false).createWorld();
                         player.sendMessage("§aSuccessfully created flat world \"" + args[1] + "\"");
                         return true;
                         }
@@ -122,16 +126,16 @@ public class WorldLoad extends JavaPlugin {
                     if(!player.hasPermission("worldload.load")) {
                         player.sendMessage("No permission");
                         return true;
-                    }
+                        }
                     if(args.length == 1) {
                         player.sendMessage("/worldload load <world>");
                         return true;
-                    }
-                    player.sendMessage("§aLoading level \"" + args[1] + "\"");
-                    new WorldCreator(args[1]).createWorld();
-                    player.sendMessage("§aSuccessfully loaded world \"" + args[1] + "\"");
-                    return true;
-                    }
+                        }
+                        player.sendMessage("§aLoading level \"" + args[1] + "\"");
+                        new WorldCreator(args[1]).createWorld();
+                        player.sendMessage("§aSuccessfully loaded world \"" + args[1] + "\"");
+                        return true;
+                        }
                     
                 //WorldLoad Remove    
                     
@@ -139,18 +143,18 @@ public class WorldLoad extends JavaPlugin {
                     if(!player.hasPermission("worldload.remove")) {
                         player.sendMessage("No permission");
                         return true;
-                    }
+                        }
                     if(args.length == 1) {
                         player.sendMessage("/worldload remove <world>");
                         return true;
-                    }
-                    List<String> worldlist = this.getConfig().getStringList("worldlist");
-                    worldlist.remove(args[1]);
-                    getConfig().set("worldlist", worldlist);
-                    saveConfig();
-                    player.sendMessage("§aSuccessfully removed world \"" + args[1] + "\"");
-                    return true;
-                    }
+                        }
+                        List<String> worldlist = this.getConfig().getStringList("worldlist");
+                        worldlist.remove(args[1]);
+                        getConfig().set("worldlist", worldlist);
+                        saveConfig();
+                        player.sendMessage("§aSuccessfully removed world \"" + args[1] + "\"");
+                        return true;
+                        }
                 
                 //WorldLoad List
                     
@@ -158,17 +162,17 @@ public class WorldLoad extends JavaPlugin {
                     if(!player.hasPermission("worldload.list")) {
                         player.sendMessage("No permission");
                         return true;
-                    }
-                    if(args.length == 1) {
-                    List<String> worldlist = this.getConfig().getStringList("worldlist");
-                    player.sendMessage("----- §3§lWorldLoad World List §f-----");
-                    for(String worlds : worldlist)
-                    player.sendMessage(worlds);
-                    player.sendMessage("--------------------------------");
-                    return true;
                         }
-                    }
+                    if(args.length == 1) {
+                        List<String> worldlist = this.getConfig().getStringList("worldlist");
+                        player.sendMessage("----- §3§lWorldLoad World List §f-----");
+                        for(String worlds : worldlist)
+                        player.sendMessage(worlds);
+                        player.sendMessage("--------------------------------");
+                        return true;
                 }
-                return true;
+            }
+        }
+            return true;
     }
 }
