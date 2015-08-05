@@ -20,6 +20,7 @@ public class WorldLoad extends JavaPlugin {
 	@Override
 	public void onEnable() {
 	getConfig().options().copyDefaults(true);
+	saveDefaultConfig();
 	for(String worlds : worldlist) {
 		getLogger().info("Preparing level \"" + worlds + "\"");
 		new WorldCreator(worlds).createWorld();
@@ -45,7 +46,7 @@ public class WorldLoad extends JavaPlugin {
 							player.sendMessage("§3/worldload §7help §f- Displays this page");
 							player.sendMessage("§3/worldload §7tp <world> §f- Teleport to a world");
 							player.sendMessage("§3/worldload §7create <world> [-flat] §f- Create a world");
-							player.sendMessage("§3/worldload §7load <world> §f- Load a world for one time use");
+							player.sendMessage("§3/worldload §7load <world> §f- Load a world for one time");
 							player.sendMessage("§3/worldload §7remove <world> §f- Remove a world");
 							player.sendMessage("§3/worldload §7list §f- List your worlds");
 							return true;
