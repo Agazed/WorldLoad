@@ -16,7 +16,7 @@ Instructions:
 
 Commands:
 
-<img src="http://i.imgur.com/5XwLBuf.png">
+<img src="http://i.imgur.com/pZjuPVq.png">
 
 
 Permissions:
