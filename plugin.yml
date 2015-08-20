@@ -3,7 +3,7 @@ author: Agazed
 description: Load or generate a world
 website: http://www.skylair.net
 main: net.agazed.worldload.WorldLoad
-version: 2.0
+version: 2.1
 commands:
   worldload:
     description: Main command for WorldLoad
