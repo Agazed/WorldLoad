@@ -18,6 +18,7 @@ public class WorldLoad extends JavaPlugin {
     List<String> worldlist = this.getConfig().getStringList("worldlist");
     List<String> flatworldlist = this.getConfig().getStringList("flatworldlist");
     List<String> worldlistloaded = new ArrayList<String>();
+    List<String> worldlistunloaded = new ArrayList<String>();
 
     @Override
     public void onEnable() {
@@ -128,6 +129,12 @@ public class WorldLoad extends JavaPlugin {
                     player.sendMessage(ChatColor.RED + "World already exists!");
                     return true;
                 }
+                if (worldlistloaded.contains(args[1])) {
+                    worldlistloaded.remove(args[1]);
+                }
+                if (worldlistunloaded.contains(args[1])) {
+                    worldlistunloaded.remove(args[1]);
+                }
                 player.sendMessage(ChatColor.GREEN + "Preparing level \"" + args[1] + "\"");
                 worldlist.add(args[1]);
                 getConfig().set("worldlist", worldlist);
@@ -147,6 +154,12 @@ public class WorldLoad extends JavaPlugin {
                         || getServer().getWorld(args[1]) == getServer().getWorlds().get(2)) {
                     player.sendMessage(ChatColor.RED + "World already exists!");
                     return true;
+                }
+                if (worldlistloaded.contains(args[1])) {
+                    worldlistloaded.remove(args[1]);
+                }
+                if (worldlistunloaded.contains(args[1])) {
+                    worldlistunloaded.remove(args[1]);
                 }
                 player.sendMessage(ChatColor.GREEN + "Preparing flat level \"" + args[1] + "\"");
                 flatworldlist.add(args[1]);
@@ -170,7 +183,7 @@ public class WorldLoad extends JavaPlugin {
                 player.sendMessage(ChatColor.RED + "Correct usage: /worldload remove <world>");
                 return true;
             }
-            if (!worldlist.contains(args[1]) || !flatworldlist.contains(args[1])) {
+            if (!worldlist.contains(args[1]) && !flatworldlist.contains(args[1])) {
                 player.sendMessage(ChatColor.RED + "World is not on the world list!");
                 return true;
             }
@@ -178,6 +191,12 @@ public class WorldLoad extends JavaPlugin {
                 worldlist.remove(args[1]);
                 getConfig().set("worldlist", worldlist);
                 saveConfig();
+                if (getServer().getWorld(args[1]) == null) {
+                    player.sendMessage(ChatColor.GREEN + "Successfully removed unloaded world \"" + args[1]
+                            + "\" from the world list.");
+                    return true;
+                }
+                worldlistloaded.add(args[1]);
                 player.sendMessage(
                         ChatColor.GREEN + "Successfully removed world \"" + args[1] + "\" from the world list.");
                 return true;
@@ -186,6 +205,12 @@ public class WorldLoad extends JavaPlugin {
                 flatworldlist.remove(args[1]);
                 getConfig().set("flatworldlist", flatworldlist);
                 saveConfig();
+                if (getServer().getWorld(args[1]) == null) {
+                    player.sendMessage(ChatColor.GREEN + "Successfully removed unloaded flat world \"" + args[1]
+                            + "\" from the flat world list.");
+                    return true;
+                }
+                worldlistloaded.add(args[1]);
                 player.sendMessage(ChatColor.GREEN + "Successfully removed flat world \"" + args[1]
                         + "\" from the flat world list.");
                 return true;
@@ -204,7 +229,16 @@ public class WorldLoad extends JavaPlugin {
                 return true;
             }
             if (getServer().getWorld(args[1]) == null) {
-                player.sendMessage(ChatColor.RED + "World does not exist!");
+                File unloaded = new File(args[1]);
+                if (!unloaded.exists()) {
+                    player.sendMessage(ChatColor.RED + "World does not exist!");
+                    return true;
+                }
+                if (worldlistunloaded.contains(args[1])) {
+                    worldlistunloaded.remove(args[1]);
+                }
+                delete(unloaded);
+                player.sendMessage(ChatColor.GREEN + "Successfully deleted unloaded world \"" + args[1] + "\"");
                 return true;
             }
             if (getServer().getWorld(args[1]) == getServer().getWorlds().get(0)
@@ -229,6 +263,9 @@ public class WorldLoad extends JavaPlugin {
             }
             if (worldlistloaded.contains(args[1])) {
                 worldlistloaded.remove(args[1]);
+            }
+            if (worldlistunloaded.contains(args[1])) {
+                worldlistunloaded.remove(args[1]);
             }
             File world = getServer().getWorld(args[1]).getWorldFolder();
             getServer().unloadWorld(args[1], true);
@@ -255,6 +292,9 @@ public class WorldLoad extends JavaPlugin {
                 player.sendMessage(ChatColor.RED + "World already exists!");
                 return true;
             }
+            if (worldlistunloaded.contains(args[1])) {
+                worldlistunloaded.remove(args[1]);
+            }
             worldlistloaded.add(args[1]);
             player.sendMessage(ChatColor.GREEN + "Loading level \"" + args[1] + "\"");
             new WorldCreator(args[1]).createWorld();
@@ -273,6 +313,10 @@ public class WorldLoad extends JavaPlugin {
                 player.sendMessage(ChatColor.RED + "Correct usage: /worldload unload <world>");
                 return true;
             }
+            if (worldlistunloaded.contains(args[1])) {
+                player.sendMessage(ChatColor.RED + "World is already unloaded!");
+                return true;
+            }
             if (getServer().getWorld(args[1]) == null) {
                 player.sendMessage(ChatColor.RED + "World does not exist!");
                 return true;
@@ -289,6 +333,9 @@ public class WorldLoad extends JavaPlugin {
             }
             if (worldlistloaded.contains(args[1])) {
                 worldlistloaded.remove(args[1]);
+            }
+            if (!worldlistunloaded.contains(args[1])) {
+                worldlistunloaded.add(args[1]);
             }
             getServer().unloadWorld(args[1], true);
             player.sendMessage(ChatColor.GREEN + "Successfully unloaded world \"" + args[1] + "\"");
@@ -350,6 +397,36 @@ public class WorldLoad extends JavaPlugin {
                 player.sendMessage(ChatColor.DARK_AQUA + "Normal: " + ChatColor.GRAY + worldlist.toString());
                 player.sendMessage(ChatColor.DARK_AQUA + "Flat: " + ChatColor.GRAY + flatworldlist.toString());
                 player.sendMessage(ChatColor.DARK_AQUA + "Loaded: " + ChatColor.GRAY + worldlistloaded.toString());
+                player.sendMessage(ChatColor.DARK_AQUA + "Unloaded: " + ChatColor.GRAY + worldlistunloaded.toString());
+                return true;
+            }
+        }
+
+        // WorldLoad Reload
+
+        if (args[0].equalsIgnoreCase("reload")) {
+            if (!player.hasPermission("worldload.reload")) {
+                player.sendMessage(ChatColor.RED + "No permission!");
+                return true;
+            }
+            if (args.length == 1) {
+                this.reloadConfig();
+                this.saveConfig();
+                player.sendMessage(ChatColor.GREEN + "Attempting to reload config...");
+                for (String worlds : worldlist) {
+                    getLogger().info("Preparing level \"" + worlds + "\"");
+                    player.sendMessage(ChatColor.GREEN + "Preparing level \"" + worlds + "\"");
+                    new WorldCreator(worlds).createWorld();
+                    player.sendMessage(ChatColor.GREEN + "Successfully created world \"" + worlds + "\"");
+                }
+                for (String flatworlds : flatworldlist) {
+                    getLogger().info("Preparing flat level \"" + flatworlds + "\"");
+                    player.sendMessage(ChatColor.GREEN + "Preparing level \"" + flatworlds + "\"");
+                    new WorldCreator(flatworlds).type(WorldType.FLAT)
+                            .generateStructures(getConfig().getBoolean("generateStructuresInFlatWorlds")).createWorld();
+                    player.sendMessage(ChatColor.GREEN + "Successfully created flat world \"" + flatworlds + "\"");
+                }
+                player.sendMessage(ChatColor.GREEN + "Successfully reloaded config!");
                 return true;
             }
         }
