@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.command.Command;
@@ -15,7 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class WorldLoad extends JavaPlugin {
 
     List<String> worldlist = this.getConfig().getStringList("worldlist");
-    ArrayList<String> worldlistloaded = new ArrayList<String>();
+    List<String> worldlistloaded = new ArrayList<String>();
 
     @Override
     public void onEnable() {
@@ -39,7 +38,7 @@ public class WorldLoad extends JavaPlugin {
         if (cmd.getName().equalsIgnoreCase("worldload")) {
             if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
                 if (!player.hasPermission("worldload.help")) {
-                    player.sendMessage("§cNo permission");
+                    player.sendMessage("§cNo permission!");
                     return true;
                 }
                 player.sendMessage("----- §3§lWorldLoad Help §f-----");
@@ -57,7 +56,7 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("tp")) {
             if (!player.hasPermission("worldload.tp")) {
-                player.sendMessage("§cNo permission");
+                player.sendMessage("§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
@@ -65,11 +64,11 @@ public class WorldLoad extends JavaPlugin {
                 return true;
             }
             if (player.getServer().getWorld(args[1]) == null) {
-                player.sendMessage("§cInvalid world name or world not loaded");
+                player.sendMessage("§cWorld does not exist!");
                 return true;
             }
-            World world = player.getServer().getWorld(args[1]);
-            Location loc = new Location(world, 0, world.getHighestBlockYAt(0, 0), 0);
+            Location loc = new Location(getServer().getWorld(args[1]), 0,
+                    getServer().getWorld(args[1]).getHighestBlockYAt(0, 0), 0);
             player.teleport(loc);
             player.sendMessage("§aTeleported to world \"" + args[1] + "\"");
             return true;
@@ -79,7 +78,7 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("create")) {
             if (!player.hasPermission("worldload.create")) {
-                player.sendMessage("§cNo permission");
+                player.sendMessage("§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
@@ -87,8 +86,8 @@ public class WorldLoad extends JavaPlugin {
                 return true;
             }
             if (args.length == 2) {
-                if (worldlist.contains(args[1])) {
-                    player.sendMessage("§cWorld already exists");
+                if (worldlist.contains(args[1]) || getServer().getWorld(args[1]) != null) {
+                    player.sendMessage("§cWorld already exists!");
                     return true;
                 }
                 player.sendMessage("§aPreparing level \"" + args[1] + "\"");
@@ -101,11 +100,11 @@ public class WorldLoad extends JavaPlugin {
             }
             if (args[2].equalsIgnoreCase("-flat")) {
                 if (!player.hasPermission("worldload.create.flat")) {
-                    player.sendMessage("§cNo permission");
+                    player.sendMessage("§cNo permission!");
                     return true;
                 }
                 if (worldlist.contains(args[1]) || getServer().getWorld(args[1]) != null) {
-                    player.sendMessage("§cWorld already exists");
+                    player.sendMessage("§cWorld already exists!");
                     return true;
                 }
                 player.sendMessage("§aPreparing flat level \"" + args[1] + "\"");
@@ -122,15 +121,16 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("load")) {
             if (!player.hasPermission("worldload.load")) {
-                player.sendMessage("§cNo permission");
+                player.sendMessage("§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
                 player.sendMessage("§cCorrect usage: /worldload load <world>");
                 return true;
             }
-            if (worldlistloaded.contains(args[1])) {
-                player.sendMessage("§cWorld already exists");
+            if (worldlistloaded.contains(args[1]) || worldlist.contains(args[1])
+                    || getServer().getWorld(args[1]) != null) {
+                player.sendMessage("§cWorld already exists!");
                 return true;
             }
             worldlistloaded.add(args[1]);
@@ -144,11 +144,15 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("remove")) {
             if (!player.hasPermission("worldload.remove")) {
-                player.sendMessage("§cNo permission");
+                player.sendMessage("§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
                 player.sendMessage("§cCorrect usage: /worldload remove <world>");
+                return true;
+            }
+            if (!worldlist.contains(args[1])) {
+                player.sendMessage("§cWorld does not exist!");
                 return true;
             }
             worldlist.remove(args[1]);
@@ -162,7 +166,7 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("list")) {
             if (!player.hasPermission("worldload.list")) {
-                player.sendMessage("§cNo permission");
+                player.sendMessage("§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
