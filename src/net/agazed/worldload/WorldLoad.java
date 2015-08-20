@@ -53,19 +53,19 @@ public class WorldLoad extends JavaPlugin {
         if (cmd.getName().equalsIgnoreCase("worldload")) {
             if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
                 if (!player.hasPermission("worldload.help")) {
-                    player.sendMessage("§cNo permission!");
+                    player.sendMessage("Â§cNo permission!");
                     return true;
                 }
-                player.sendMessage("----- §3§lWorldLoad Help §f-----");
-                player.sendMessage("§3/worldload §7help §f- Displays this page");
-                player.sendMessage("§3/worldload §7tp <world> §f- Teleport to a world");
-                player.sendMessage("§3/worldload §7create <world> [-flat] §f- Create a world");
-                player.sendMessage("§3/worldload §7remove <world> §f- Remove a world from the config");
-                player.sendMessage("§3/worldload §7delete <world> §f- Permanently delete a world's files");
-                player.sendMessage("§3/worldload §7load <world> §f- Load a world one time");
-                player.sendMessage("§3/worldload §7unload <world> §f- Unload a world one time");
-                player.sendMessage("§3/worldload §7stats §f- Get world statistics");
-                player.sendMessage("§3/worldload §7list §f- List your worlds");
+                player.sendMessage("----- Â§3Â§lWorldLoad Help Â§f-----");
+                player.sendMessage("Â§3/worldload Â§7help Â§f- Displays this page");
+                player.sendMessage("Â§3/worldload Â§7tp <world> Â§f- Teleport to a world");
+                player.sendMessage("Â§3/worldload Â§7create <world> [-flat] Â§f- Create a world");
+                player.sendMessage("Â§3/worldload Â§7remove <world> Â§f- Remove a world from the config");
+                player.sendMessage("Â§3/worldload Â§7delete <world> Â§f- Permanently delete a world's files");
+                player.sendMessage("Â§3/worldload Â§7load <world> Â§f- Load a world one time");
+                player.sendMessage("Â§3/worldload Â§7unload <world> Â§f- Unload a world one time");
+                player.sendMessage("Â§3/worldload Â§7stats Â§f- Get world statistics");
+                player.sendMessage("Â§3/worldload Â§7list Â§f- List your worlds");
                 return true;
             }
         }
@@ -74,21 +74,21 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("tp")) {
             if (!player.hasPermission("worldload.tp")) {
-                player.sendMessage("§cNo permission!");
+                player.sendMessage("Â§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
-                player.sendMessage("§cCorrect usage: /worldload tp <world>");
+                player.sendMessage("Â§cCorrect usage: /worldload tp <world>");
                 return true;
             }
             if (getServer().getWorld(args[1]) == null) {
-                player.sendMessage("§cWorld does not exist!");
+                player.sendMessage("Â§cWorld does not exist!");
                 return true;
             }
             Location loc = new Location(getServer().getWorld(args[1]), 0,
                     getServer().getWorld(args[1]).getHighestBlockYAt(0, 0), 0);
             player.teleport(loc);
-            player.sendMessage("§aTeleported to world \"" + args[1] + "\"");
+            player.sendMessage("Â§aTeleported to world \"" + args[1] + "\"");
             return true;
         }
 
@@ -96,45 +96,45 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("create")) {
             if (!player.hasPermission("worldload.create")) {
-                player.sendMessage("§cNo permission!");
+                player.sendMessage("Â§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
-                player.sendMessage("§cCorrect usage: /worldload create <world>");
+                player.sendMessage("Â§cCorrect usage: /worldload create <world>");
                 return true;
             }
             if (args.length == 2) {
                 if (worldlist.contains(args[1]) || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)
                         || getServer().getWorld(args[1]) == getServer().getWorlds().get(1)
                         || getServer().getWorld(args[1]) == getServer().getWorlds().get(2)) {
-                    player.sendMessage("§cWorld already exists!");
+                    player.sendMessage("Â§cWorld already exists!");
                     return true;
                 }
-                player.sendMessage("§aPreparing level \"" + args[1] + "\"");
+                player.sendMessage("Â§aPreparing level \"" + args[1] + "\"");
                 worldlist.add(args[1]);
                 getConfig().set("worldlist", worldlist);
                 saveConfig();
                 new WorldCreator(args[1]).createWorld();
-                player.sendMessage("§aSuccessfully created world \"" + args[1] + "\"");
+                player.sendMessage("Â§aSuccessfully created world \"" + args[1] + "\"");
                 return true;
             }
             if (args[2].equalsIgnoreCase("-flat")) {
                 if (!player.hasPermission("worldload.create.flat")) {
-                    player.sendMessage("§cNo permission!");
+                    player.sendMessage("Â§cNo permission!");
                     return true;
                 }
                 if (worldlist.contains(args[1]) || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)
                         || getServer().getWorld(args[1]) == getServer().getWorlds().get(1)
                         || getServer().getWorld(args[1]) == getServer().getWorlds().get(2)) {
-                    player.sendMessage("§cWorld already exists!");
+                    player.sendMessage("Â§cWorld already exists!");
                     return true;
                 }
-                player.sendMessage("§aPreparing flat level \"" + args[1] + "\"");
+                player.sendMessage("Â§aPreparing flat level \"" + args[1] + "\"");
                 worldlist.add(args[1]);
                 getConfig().set("worldlist", worldlist);
                 saveConfig();
                 new WorldCreator(args[1]).type(WorldType.FLAT).generateStructures(false).createWorld();
-                player.sendMessage("§aSuccessfully created flat world \"" + args[1] + "\"");
+                player.sendMessage("Â§aSuccessfully created flat world \"" + args[1] + "\"");
                 return true;
             }
         }
@@ -143,21 +143,21 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("remove")) {
             if (!player.hasPermission("worldload.remove")) {
-                player.sendMessage("§cNo permission!");
+                player.sendMessage("Â§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
-                player.sendMessage("§cCorrect usage: /worldload remove <world>");
+                player.sendMessage("Â§cCorrect usage: /worldload remove <world>");
                 return true;
             }
             if (!worldlist.contains(args[1])) {
-                player.sendMessage("§cWorld is not on the world list!");
+                player.sendMessage("Â§cWorld is not on the world list!");
                 return true;
             }
             worldlist.remove(args[1]);
             getConfig().set("worldlist", worldlist);
             saveConfig();
-            player.sendMessage("§aSuccessfully removed world \"" + args[1] + "\" from the world list.");
+            player.sendMessage("Â§aSuccessfully removed world \"" + args[1] + "\" from the world list.");
             return true;
         }
 
@@ -165,25 +165,25 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("delete")) {
             if (!player.hasPermission("worldload.delete")) {
-                player.sendMessage("§cNo permission!");
+                player.sendMessage("Â§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
-                player.sendMessage("§cCorrect usage: /worldload delete <world>");
+                player.sendMessage("Â§cCorrect usage: /worldload delete <world>");
                 return true;
             }
             if (getServer().getWorld(args[1]) == null) {
-                player.sendMessage("§cWorld does not exist!");
+                player.sendMessage("Â§cWorld does not exist!");
                 return true;
             }
             if (getServer().getWorld(args[1]) == getServer().getWorlds().get(0)
                     || getServer().getWorld(args[1]) == getServer().getWorlds().get(1)
                     || getServer().getWorld(args[1]) == getServer().getWorlds().get(2)) {
-                player.sendMessage("§cCannot delete a main world!");
+                player.sendMessage("Â§cCannot delete a main world!");
                 return true;
             }
             if (getServer().getWorld(args[1]).getPlayers().size() > 0) {
-                player.sendMessage("§cCannot delete a world with players inside!");
+                player.sendMessage("Â§cCannot delete a world with players inside!");
                 return true;
             }
             if (worldlist.contains(args[1])) {
@@ -197,7 +197,7 @@ public class WorldLoad extends JavaPlugin {
             File world = getServer().getWorld(args[1]).getWorldFolder();
             getServer().unloadWorld(args[1], true);
             delete(world);
-            player.sendMessage("§aSuccessfully deleted world \"" + args[1] + "\"");
+            player.sendMessage("Â§aSuccessfully deleted world \"" + args[1] + "\"");
             return true;
         }
 
@@ -205,24 +205,24 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("load")) {
             if (!player.hasPermission("worldload.load")) {
-                player.sendMessage("§cNo permission!");
+                player.sendMessage("Â§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
-                player.sendMessage("§cCorrect usage: /worldload load <world>");
+                player.sendMessage("Â§cCorrect usage: /worldload load <world>");
                 return true;
             }
             if (worldlistloaded.contains(args[1]) || worldlist.contains(args[1])
                     || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)
                     || getServer().getWorld(args[1]) == getServer().getWorlds().get(1)
                     || getServer().getWorld(args[1]) == getServer().getWorlds().get(2)) {
-                player.sendMessage("§cWorld already exists!");
+                player.sendMessage("Â§cWorld already exists!");
                 return true;
             }
             worldlistloaded.add(args[1]);
-            player.sendMessage("§aLoading level \"" + args[1] + "\"");
+            player.sendMessage("Â§aLoading level \"" + args[1] + "\"");
             new WorldCreator(args[1]).createWorld();
-            player.sendMessage("§aSuccessfully loaded world \"" + args[1] + "\"");
+            player.sendMessage("Â§aSuccessfully loaded world \"" + args[1] + "\"");
             return true;
         }
 
@@ -230,62 +230,62 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("unload")) {
             if (!player.hasPermission("worldload.unload")) {
-                player.sendMessage("§cNo permission!");
+                player.sendMessage("Â§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
-                player.sendMessage("§cCorrect usage: /worldload unload <world>");
+                player.sendMessage("Â§cCorrect usage: /worldload unload <world>");
                 return true;
             }
             if (getServer().getWorld(args[1]) == null) {
-                player.sendMessage("§cWorld does not exist!");
+                player.sendMessage("Â§cWorld does not exist!");
                 return true;
             }
             if (getServer().getWorld(args[1]) == getServer().getWorlds().get(0)
                     || getServer().getWorld(args[1]) == getServer().getWorlds().get(1)
                     || getServer().getWorld(args[1]) == getServer().getWorlds().get(2)) {
-                player.sendMessage("§cCannot unload a main world!");
+                player.sendMessage("Â§cCannot unload a main world!");
                 return true;
             }
             if (getServer().getWorld(args[1]).getPlayers().size() > 0) {
-                player.sendMessage("§cCannot unload a world with players inside!");
+                player.sendMessage("Â§cCannot unload a world with players inside!");
                 return true;
             }
             if (worldlistloaded.contains(args[1])) {
                 worldlistloaded.remove(args[1]);
             }
             getServer().unloadWorld(args[1], true);
-            player.sendMessage("§aSuccessfully unloaded world \"" + args[1] + "\"");
+            player.sendMessage("Â§aSuccessfully unloaded world \"" + args[1] + "\"");
             return true;
         }
 
-        // WorldLoad Status
+        // WorldLoad Stats
 
         if (args[0].equalsIgnoreCase("stats")) {
             if (!player.hasPermission("worldload.stats")) {
-                player.sendMessage("§cNo permission!");
+                player.sendMessage("Â§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
                 int entities = player.getWorld().getEntities().size() - player.getWorld().getPlayers().size();
-                player.sendMessage("----- §3§lCurrent World Statistics §f-----");
-                player.sendMessage("§7World: §3" + player.getWorld().getName());
-                player.sendMessage("§7World Type: §3" + player.getWorld().getWorldType().getName());
-                player.sendMessage("§7Environment: §3" + player.getWorld().getEnvironment().toString());
-                player.sendMessage("§7Biome: §3" + player.getWorld().getBiome(player.getLocation().getBlockX(),
+                player.sendMessage("----- Â§3Â§lCurrent World Statistics Â§f-----");
+                player.sendMessage("Â§7World: Â§3" + player.getWorld().getName());
+                player.sendMessage("Â§7World Type: Â§3" + player.getWorld().getWorldType().getName());
+                player.sendMessage("Â§7Environment: Â§3" + player.getWorld().getEnvironment().toString());
+                player.sendMessage("Â§7Biome: Â§3" + player.getWorld().getBiome(player.getLocation().getBlockX(),
                         player.getLocation().getBlockZ()));
-                player.sendMessage("§7Seed: §3" + player.getWorld().getSeed());
-                player.sendMessage("§7Difficulty: §3" + player.getWorld().getDifficulty().toString());
-                player.sendMessage("§7Entities: §3" + entities);
-                player.sendMessage("§7Players: §3" + player.getWorld().getPlayers().size());
-                player.sendMessage("§7Time: §3" + player.getWorld().getTime());
-                player.sendMessage("§7Max Height: §3" + player.getWorld().getMaxHeight());
-                player.sendMessage("§7Generate Structures: §3" + player.getWorld().canGenerateStructures());
-                player.sendMessage("§7World Border: §3" + player.getWorld().getWorldBorder().getSize());
-                player.sendMessage("§7Spawn: §3" + player.getWorld().getSpawnLocation().getBlockX() + " / "
+                player.sendMessage("Â§7Seed: Â§3" + player.getWorld().getSeed());
+                player.sendMessage("Â§7Difficulty: Â§3" + player.getWorld().getDifficulty().toString());
+                player.sendMessage("Â§7Entities: Â§3" + entities);
+                player.sendMessage("Â§7Players: Â§3" + player.getWorld().getPlayers().size());
+                player.sendMessage("Â§7Time: Â§3" + player.getWorld().getTime());
+                player.sendMessage("Â§7Max Height: Â§3" + player.getWorld().getMaxHeight());
+                player.sendMessage("Â§7Generate Structures: Â§3" + player.getWorld().canGenerateStructures());
+                player.sendMessage("Â§7World Border: Â§3" + player.getWorld().getWorldBorder().getSize());
+                player.sendMessage("Â§7Spawn: Â§3" + player.getWorld().getSpawnLocation().getBlockX() + " / "
                         + player.getWorld().getSpawnLocation().getBlockY() + " / "
                         + player.getWorld().getSpawnLocation().getBlockZ());
-                player.sendMessage("§7Coordinates: §3" + player.getLocation().getBlockX() + " / "
+                player.sendMessage("Â§7Coordinates: Â§3" + player.getLocation().getBlockX() + " / "
                         + player.getLocation().getBlockY() + " / " + player.getLocation().getBlockZ());
                 return true;
             }
@@ -295,18 +295,18 @@ public class WorldLoad extends JavaPlugin {
 
         if (args[0].equalsIgnoreCase("list")) {
             if (!player.hasPermission("worldload.list")) {
-                player.sendMessage("§cNo permission!");
+                player.sendMessage("Â§cNo permission!");
                 return true;
             }
             if (args.length == 1) {
-                player.sendMessage("----- §3§lWorld List §f-----");
-                player.sendMessage("§3Created: §7" + worldlist.toString());
-                player.sendMessage("§3Loaded: §7" + worldlistloaded.toString());
+                player.sendMessage("----- Â§3Â§lWorld List Â§f-----");
+                player.sendMessage("Â§3Created: Â§7" + worldlist.toString());
+                player.sendMessage("Â§3Loaded: Â§7" + worldlistloaded.toString());
                 player.sendMessage("---------------------");
                 return true;
             }
         }
-        player.sendMessage("§cUnknown argument!");
+        player.sendMessage("Â§cUnknown argument!");
         return true;
     }
 }
