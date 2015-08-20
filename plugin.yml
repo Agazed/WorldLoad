@@ -33,6 +33,9 @@ permissions:
     worldload.unload:
         description: Unload a world one time
         default: op
+    worldload.stats:
+        description: Get world statistics
+        default: op
     worldload.list:
         description: List your worlds
         default: op

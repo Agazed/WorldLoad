@@ -64,6 +64,7 @@ public class WorldLoad extends JavaPlugin {
                 player.sendMessage("§3/worldload §7delete <world> §f- Permanently delete a world's files");
                 player.sendMessage("§3/worldload §7load <world> §f- Load a world one time");
                 player.sendMessage("§3/worldload §7unload <world> §f- Unload a world one time");
+                player.sendMessage("§3/worldload §7stats §f- Get world statistics");
                 player.sendMessage("§3/worldload §7list §f- List your worlds");
                 return true;
             }
@@ -256,6 +257,38 @@ public class WorldLoad extends JavaPlugin {
             getServer().unloadWorld(args[1], true);
             player.sendMessage("§aSuccessfully unloaded world \"" + args[1] + "\"");
             return true;
+        }
+
+        // WorldLoad Status
+
+        if (args[0].equalsIgnoreCase("stats")) {
+            if (!player.hasPermission("worldload.stats")) {
+                player.sendMessage("§cNo permission!");
+                return true;
+            }
+            if (args.length == 1) {
+                int entities = player.getWorld().getEntities().size() - player.getWorld().getPlayers().size();
+                player.sendMessage("----- §3§lCurrent World Statistics §f-----");
+                player.sendMessage("§7World: §3" + player.getWorld().getName());
+                player.sendMessage("§7World Type: §3" + player.getWorld().getWorldType().getName());
+                player.sendMessage("§7Environment: §3" + player.getWorld().getEnvironment().toString());
+                player.sendMessage("§7Biome: §3" + player.getWorld().getBiome(player.getLocation().getBlockX(),
+                        player.getLocation().getBlockZ()));
+                player.sendMessage("§7Seed: §3" + player.getWorld().getSeed());
+                player.sendMessage("§7Difficulty: §3" + player.getWorld().getDifficulty().toString());
+                player.sendMessage("§7Entities: §3" + entities);
+                player.sendMessage("§7Players: §3" + player.getWorld().getPlayers().size());
+                player.sendMessage("§7Time: §3" + player.getWorld().getTime());
+                player.sendMessage("§7Max Height: §3" + player.getWorld().getMaxHeight());
+                player.sendMessage("§7Generate Structures: §3" + player.getWorld().canGenerateStructures());
+                player.sendMessage("§7World Border: §3" + player.getWorld().getWorldBorder().getSize());
+                player.sendMessage("§7Spawn: §3" + player.getWorld().getSpawnLocation().getBlockX() + " / "
+                        + player.getWorld().getSpawnLocation().getBlockY() + " / "
+                        + player.getWorld().getSpawnLocation().getBlockZ());
+                player.sendMessage("§7Coordinates: §3" + player.getLocation().getBlockX() + " / "
+                        + player.getLocation().getBlockY() + " / " + player.getLocation().getBlockZ());
+                return true;
+            }
         }
 
         // WorldLoad List
