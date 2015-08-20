@@ -29,7 +29,8 @@ public class WorldLoad extends JavaPlugin {
         }
         for (String flatworlds : flatworldlist) {
             getLogger().info("Preparing flat level \"" + flatworlds + "\"");
-            new WorldCreator(flatworlds).type(WorldType.FLAT).generateStructures(false).createWorld();
+            new WorldCreator(flatworlds).type(WorldType.FLAT)
+                    .generateStructures(getConfig().getBoolean("generateStructuresInFlatWorlds")).createWorld();
         }
     }
 
@@ -151,7 +152,8 @@ public class WorldLoad extends JavaPlugin {
                 flatworldlist.add(args[1]);
                 getConfig().set("flatworldlist", flatworldlist);
                 saveConfig();
-                new WorldCreator(args[1]).type(WorldType.FLAT).generateStructures(false).createWorld();
+                new WorldCreator(args[1]).type(WorldType.FLAT)
+                        .generateStructures(getConfig().getBoolean("generateStructuresInFlatWorlds")).createWorld();
                 player.sendMessage(ChatColor.GREEN + "Successfully created flat world \"" + args[1] + "\"");
                 return true;
             }

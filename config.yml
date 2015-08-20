@@ -9,3 +9,6 @@ flatworldlist:
 #- flatworldname
 #- flatworldname2
 #- flatworldname3
+
+# Do you want villages to generate in flat worlds?
+generateStructuresInFlatWorlds: false
