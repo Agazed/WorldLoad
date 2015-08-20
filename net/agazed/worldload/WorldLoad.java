@@ -151,8 +151,7 @@ public class WorldLoad extends JavaPlugin {
                 player.sendMessage("§cCorrect usage: /worldload remove <world>");
                 return true;
             }
-            if (!worldlist.contains(args[1]) || !worldlistloaded.contains(args[1])
-                    || worldlistloaded.contains(args[1])) {
+            if (!worldlist.contains(args[1])) {
                 player.sendMessage("§cWorld does not exist!");
                 return true;
             }
