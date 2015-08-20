@@ -1,12 +1,15 @@
 Ever wanted to load or teleport to a world without using Multiverse?
 
-This is a lightweight plugin allows you to simply load, create, remove, and teleport to a world.
+This is a lightweight plugin allows you to simply load, create, remove, and teleport worlds.
 
 Features:
 
 * Drag and drop worlds into your main directory and load them with this plugin
-* Create worlds and have them load when you start your server
 * Teleport to worlds
+* Create/load worlds
+* Remove/Delete/unload worlds
+* See world statistics
+* List your worlds
 
 Instructions:
 
@@ -25,8 +28,11 @@ Permissions:
 * worldload.tp
 * worldload.create
 * worldload.create.flat
-* worldload.load
 * worldload.remove
+* worldload.delete
+* worldload.load
+* worldload.unload
+* worldload.stats
 * worldload.list
 
 TODO:
