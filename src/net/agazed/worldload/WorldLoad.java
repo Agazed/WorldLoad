@@ -44,7 +44,7 @@ public class WorldLoad extends JavaPlugin {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            System.out.println(ChatColor.GREEN + "Command can only be run in-game.");
+            System.out.println("Command can only be run in-game.");
             return true;
         }
         Player player = (Player) sender;
