@@ -1,6 +1,7 @@
 package net.agazed.worldload;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,12 @@ public class WorldLoad extends JavaPlugin {
             getLogger().info("Preparing flat level \"" + flatworld + "\"");
             new WorldCreator(flatworld).type(WorldType.FLAT)
                     .generateStructures(getConfig().getBoolean("generateStructuresInFlatWorlds")).createWorld();
+        }
+        try {
+            Metrics metrics = new Metrics(this);
+            metrics.start();
+        } catch (IOException e) {
+            // Failed to submit the stats :-(
         }
     }
 
