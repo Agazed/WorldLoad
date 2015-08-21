@@ -39,3 +39,6 @@ permissions:
     worldload.list:
         description: List your worlds
         default: op
+    worldlist.reload:
+        description: Reload the config
+        default: op

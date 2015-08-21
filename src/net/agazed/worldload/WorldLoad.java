@@ -81,7 +81,7 @@ public class WorldLoad extends JavaPlugin {
                 sender.sendMessage(ChatColor.DARK_AQUA + "/worldload " + ChatColor.GRAY + "list " + ChatColor.WHITE
                         + "- List your worlds");
                 sender.sendMessage(ChatColor.DARK_AQUA + "/worldload " + ChatColor.GRAY + "reload " + ChatColor.WHITE
-                        + "- Load new worlds from config");
+                        + "- Reload the config");
                 return true;
             }
         }
