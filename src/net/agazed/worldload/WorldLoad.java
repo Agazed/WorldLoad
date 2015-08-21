@@ -76,8 +76,8 @@ public class WorldLoad extends JavaPlugin {
                         + ChatColor.WHITE + "- Load a world one time");
                 sender.sendMessage(ChatColor.DARK_AQUA + "/worldload " + ChatColor.GRAY + "unload <world> "
                         + ChatColor.WHITE + "- Unload a world one time");
-                sender.sendMessage(ChatColor.DARK_AQUA + "/worldload " + ChatColor.GRAY + "stats " + ChatColor.WHITE
-                        + "- Get world statistics");
+                sender.sendMessage(ChatColor.DARK_AQUA + "/worldload " + ChatColor.GRAY + "stats [world]"
+                        + ChatColor.WHITE + "- Get world statistics");
                 sender.sendMessage(ChatColor.DARK_AQUA + "/worldload " + ChatColor.GRAY + "list " + ChatColor.WHITE
                         + "- List your worlds");
                 sender.sendMessage(ChatColor.DARK_AQUA + "/worldload " + ChatColor.GRAY + "reload " + ChatColor.WHITE
@@ -348,15 +348,16 @@ public class WorldLoad extends JavaPlugin {
         // WorldLoad Stats
 
         if (args[0].equalsIgnoreCase("stats")) {
-            if (sender instanceof ConsoleCommandSender) {
-                getServer().getConsoleSender().sendMessage(ChatColor.RED + "Command can only be run as a player!");
-                return true;
-            }
             if (!sender.hasPermission("worldload.stats")) {
                 sender.sendMessage(ChatColor.RED + "No permission!");
                 return true;
             }
             if (args.length == 1) {
+                if (sender instanceof ConsoleCommandSender) {
+                    getServer().getConsoleSender()
+                            .sendMessage(ChatColor.RED + "Correct usage: /worldload stats [world]");
+                    return true;
+                }
                 Player player = (Player) sender;
                 int entities = player.getWorld().getEntities().size() - player.getWorld().getPlayers().size();
                 sender.sendMessage("----- " + ChatColor.DARK_AQUA + ChatColor.BOLD + "Current World Statistics "
@@ -383,6 +384,42 @@ public class WorldLoad extends JavaPlugin {
                         + player.getWorld().getSpawnLocation().getBlockX() + " / "
                         + player.getWorld().getSpawnLocation().getBlockY() + " / "
                         + player.getWorld().getSpawnLocation().getBlockZ());
+                return true;
+            }
+            if (args.length == 2) {
+                if (getServer().getWorld(args[1]) == null) {
+                    sender.sendMessage(ChatColor.RED + "World does not exist!");
+                    return true;
+                }
+                int entities = getServer().getWorld(args[1]).getEntities().size()
+                        - getServer().getWorld(args[1]).getPlayers().size();
+                sender.sendMessage("----- " + ChatColor.DARK_AQUA + ChatColor.BOLD + "World \"" + args[1]
+                        + "\" Statistics " + ChatColor.WHITE + "-----");
+                sender.sendMessage(
+                        ChatColor.GRAY + "World: " + ChatColor.DARK_AQUA + getServer().getWorld(args[1]).getName());
+                sender.sendMessage(ChatColor.GRAY + "World Type: " + ChatColor.DARK_AQUA
+                        + getServer().getWorld(args[1]).getWorldType().getName());
+                sender.sendMessage(ChatColor.GRAY + "Environment: " + ChatColor.DARK_AQUA
+                        + getServer().getWorld(args[1]).getEnvironment().toString());
+                sender.sendMessage(
+                        ChatColor.GRAY + "Seed: " + ChatColor.DARK_AQUA + getServer().getWorld(args[1]).getSeed());
+                sender.sendMessage(ChatColor.GRAY + "Difficulty: " + ChatColor.DARK_AQUA
+                        + getServer().getWorld(args[1]).getDifficulty().toString());
+                sender.sendMessage(ChatColor.GRAY + "Entities: " + ChatColor.DARK_AQUA + entities);
+                sender.sendMessage(ChatColor.GRAY + "Players: " + ChatColor.DARK_AQUA
+                        + getServer().getWorld(args[1]).getPlayers().size());
+                sender.sendMessage(
+                        ChatColor.GRAY + "Time: " + ChatColor.DARK_AQUA + getServer().getWorld(args[1]).getTime());
+                sender.sendMessage(ChatColor.GRAY + "Max Height: " + ChatColor.DARK_AQUA
+                        + getServer().getWorld(args[1]).getMaxHeight());
+                sender.sendMessage(ChatColor.GRAY + "Generate Structures: " + ChatColor.DARK_AQUA
+                        + getServer().getWorld(args[1]).canGenerateStructures());
+                sender.sendMessage(ChatColor.GRAY + "World Border: " + ChatColor.DARK_AQUA
+                        + getServer().getWorld(args[1]).getWorldBorder().getSize());
+                sender.sendMessage(ChatColor.GRAY + "Spawn: " + ChatColor.DARK_AQUA
+                        + getServer().getWorld(args[1]).getSpawnLocation().getBlockX() + " / "
+                        + getServer().getWorld(args[1]).getSpawnLocation().getBlockY() + " / "
+                        + getServer().getWorld(args[1]).getSpawnLocation().getBlockZ());
                 return true;
             }
         }
