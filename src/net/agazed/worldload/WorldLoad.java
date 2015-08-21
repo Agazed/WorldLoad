@@ -16,8 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WorldLoad extends JavaPlugin {
 
-    List<String> worldlist = this.getConfig().getStringList("worldlist");
-    List<String> flatworldlist = this.getConfig().getStringList("flatworldlist");
+    List<String> worldlist = getConfig().getStringList("worldlist");
+    List<String> flatworldlist = getConfig().getStringList("flatworldlist");
     List<String> worldlistloaded = new ArrayList<String>();
     List<String> worldlistunloaded = new ArrayList<String>();
 
@@ -25,13 +25,13 @@ public class WorldLoad extends JavaPlugin {
     public void onEnable() {
         getConfig().options().copyDefaults(true);
         saveConfig();
-        for (String worlds : worldlist) {
-            getLogger().info("Preparing level \"" + worlds + "\"");
-            new WorldCreator(worlds).createWorld();
+        for (String world : worldlist) {
+            getLogger().info("Preparing level \"" + world + "\"");
+            new WorldCreator(world).createWorld();
         }
-        for (String flatworlds : flatworldlist) {
-            getLogger().info("Preparing flat level \"" + flatworlds + "\"");
-            new WorldCreator(flatworlds).type(WorldType.FLAT)
+        for (String flatworld : flatworldlist) {
+            getLogger().info("Preparing flat level \"" + flatworld + "\"");
+            new WorldCreator(flatworld).type(WorldType.FLAT)
                     .generateStructures(getConfig().getBoolean("generateStructuresInFlatWorlds")).createWorld();
         }
     }
@@ -418,21 +418,24 @@ public class WorldLoad extends JavaPlugin {
                 return true;
             }
             if (args.length == 1) {
-                this.reloadConfig();
-                this.saveConfig();
-                sender.sendMessage(ChatColor.GREEN + "Attempting to reload config...");
-                for (String worlds : worldlist) {
-                    getLogger().info("Preparing level \"" + worlds + "\"");
-                    sender.sendMessage(ChatColor.GREEN + "Preparing level \"" + worlds + "\"");
-                    new WorldCreator(worlds).createWorld();
-                    sender.sendMessage(ChatColor.GREEN + "Successfully created world \"" + worlds + "\"");
+                reloadConfig();
+                List<String> worldlist = getConfig().getStringList("worldlist");
+                List<String> flatworldlist = getConfig().getStringList("flatworldlist");
+                for (String world : worldlist) {
+                    if (getServer().getWorld(world) == null) {
+                        sender.sendMessage(ChatColor.GREEN + "Preparing level \"" + world + "\"");
+                        new WorldCreator(world).createWorld();
+                        sender.sendMessage(ChatColor.GREEN + "Successfully created world \"" + world + "\"");
+                    }
                 }
-                for (String flatworlds : flatworldlist) {
-                    getLogger().info("Preparing flat level \"" + flatworlds + "\"");
-                    sender.sendMessage(ChatColor.GREEN + "Preparing level \"" + flatworlds + "\"");
-                    new WorldCreator(flatworlds).type(WorldType.FLAT)
-                            .generateStructures(getConfig().getBoolean("generateStructuresInFlatWorlds")).createWorld();
-                    sender.sendMessage(ChatColor.GREEN + "Successfully created flat world \"" + flatworlds + "\"");
+                for (String flatworld : flatworldlist) {
+                    if (getServer().getWorld(flatworld) == null) {
+                        sender.sendMessage(ChatColor.GREEN + "Preparing level \"" + flatworld + "\"");
+                        new WorldCreator(flatworld).type(WorldType.FLAT)
+                                .generateStructures(getConfig().getBoolean("generateStructuresInFlatWorlds"))
+                                .createWorld();
+                        sender.sendMessage(ChatColor.GREEN + "Successfully created flat world \"" + flatworld + "\"");
+                    }
                 }
                 sender.sendMessage(ChatColor.GREEN + "Successfully reloaded config!");
                 return true;
