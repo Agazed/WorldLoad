@@ -363,7 +363,7 @@ public class WorldLoad extends JavaPlugin {
                 sender.sendMessage("----- " + ChatColor.DARK_AQUA + ChatColor.BOLD + "Current World Statistics "
                         + ChatColor.WHITE + "-----");
                 sender.sendMessage(ChatColor.GRAY + "World: " + ChatColor.DARK_AQUA + player.getWorld().getName());
-                sender.sendMessage(ChatColor.GRAY + "World Type: " + ChatColor.DARK_AQUA
+                sender.sendMessage(ChatColor.GRAY + "Type: " + ChatColor.DARK_AQUA
                         + player.getWorld().getWorldType().getName());
                 sender.sendMessage(ChatColor.GRAY + "Environment: " + ChatColor.DARK_AQUA
                         + player.getWorld().getEnvironment().toString());
@@ -375,10 +375,10 @@ public class WorldLoad extends JavaPlugin {
                         ChatColor.GRAY + "Players: " + ChatColor.DARK_AQUA + player.getWorld().getPlayers().size());
                 sender.sendMessage(ChatColor.GRAY + "Time: " + ChatColor.DARK_AQUA + player.getWorld().getTime());
                 sender.sendMessage(
-                        ChatColor.GRAY + "Max Height: " + ChatColor.DARK_AQUA + player.getWorld().getMaxHeight());
-                sender.sendMessage(ChatColor.GRAY + "Generate Structures: " + ChatColor.DARK_AQUA
+                        ChatColor.GRAY + "Height: " + ChatColor.DARK_AQUA + player.getWorld().getMaxHeight());
+                sender.sendMessage(ChatColor.GRAY + "Structures: " + ChatColor.DARK_AQUA
                         + player.getWorld().canGenerateStructures());
-                sender.sendMessage(ChatColor.GRAY + "World Border: " + ChatColor.DARK_AQUA
+                sender.sendMessage(ChatColor.GRAY + "Border: " + ChatColor.DARK_AQUA
                         + player.getWorld().getWorldBorder().getSize());
                 sender.sendMessage(ChatColor.GRAY + "Spawn: " + ChatColor.DARK_AQUA
                         + player.getWorld().getSpawnLocation().getBlockX() + " / "
@@ -397,7 +397,7 @@ public class WorldLoad extends JavaPlugin {
                         + "\" Statistics " + ChatColor.WHITE + "-----");
                 sender.sendMessage(
                         ChatColor.GRAY + "World: " + ChatColor.DARK_AQUA + getServer().getWorld(args[1]).getName());
-                sender.sendMessage(ChatColor.GRAY + "World Type: " + ChatColor.DARK_AQUA
+                sender.sendMessage(ChatColor.GRAY + "Type: " + ChatColor.DARK_AQUA
                         + getServer().getWorld(args[1]).getWorldType().getName());
                 sender.sendMessage(ChatColor.GRAY + "Environment: " + ChatColor.DARK_AQUA
                         + getServer().getWorld(args[1]).getEnvironment().toString());
@@ -410,11 +410,11 @@ public class WorldLoad extends JavaPlugin {
                         + getServer().getWorld(args[1]).getPlayers().size());
                 sender.sendMessage(
                         ChatColor.GRAY + "Time: " + ChatColor.DARK_AQUA + getServer().getWorld(args[1]).getTime());
-                sender.sendMessage(ChatColor.GRAY + "Max Height: " + ChatColor.DARK_AQUA
+                sender.sendMessage(ChatColor.GRAY + "Height: " + ChatColor.DARK_AQUA
                         + getServer().getWorld(args[1]).getMaxHeight());
-                sender.sendMessage(ChatColor.GRAY + "Generate Structures: " + ChatColor.DARK_AQUA
+                sender.sendMessage(ChatColor.GRAY + "Structures: " + ChatColor.DARK_AQUA
                         + getServer().getWorld(args[1]).canGenerateStructures());
-                sender.sendMessage(ChatColor.GRAY + "World Border: " + ChatColor.DARK_AQUA
+                sender.sendMessage(ChatColor.GRAY + "Border: " + ChatColor.DARK_AQUA
                         + getServer().getWorld(args[1]).getWorldBorder().getSize());
                 sender.sendMessage(ChatColor.GRAY + "Spawn: " + ChatColor.DARK_AQUA
                         + getServer().getWorld(args[1]).getSpawnLocation().getBlockX() + " / "
