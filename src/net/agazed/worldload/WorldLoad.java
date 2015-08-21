@@ -366,8 +366,6 @@ public class WorldLoad extends JavaPlugin {
                         + player.getWorld().getWorldType().getName());
                 sender.sendMessage(ChatColor.GRAY + "Environment: " + ChatColor.DARK_AQUA
                         + player.getWorld().getEnvironment().toString());
-                sender.sendMessage(ChatColor.GRAY + "Biome: " + ChatColor.DARK_AQUA + player.getWorld()
-                        .getBiome(player.getLocation().getBlockX(), player.getLocation().getBlockZ()));
                 sender.sendMessage(ChatColor.GRAY + "Seed: " + ChatColor.DARK_AQUA + player.getWorld().getSeed());
                 sender.sendMessage(ChatColor.GRAY + "Difficulty: " + ChatColor.DARK_AQUA
                         + player.getWorld().getDifficulty().toString());
@@ -385,9 +383,6 @@ public class WorldLoad extends JavaPlugin {
                         + player.getWorld().getSpawnLocation().getBlockX() + " / "
                         + player.getWorld().getSpawnLocation().getBlockY() + " / "
                         + player.getWorld().getSpawnLocation().getBlockZ());
-                sender.sendMessage(
-                        ChatColor.GRAY + "Coordinates: " + ChatColor.DARK_AQUA + player.getLocation().getBlockX()
-                                + " / " + player.getLocation().getBlockY() + " / " + player.getLocation().getBlockZ());
                 return true;
             }
         }
