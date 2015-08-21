@@ -363,8 +363,8 @@ public class WorldLoad extends JavaPlugin {
                 sender.sendMessage("----- " + ChatColor.DARK_AQUA + ChatColor.BOLD + "Current World Statistics "
                         + ChatColor.WHITE + "-----");
                 sender.sendMessage(ChatColor.GRAY + "World: " + ChatColor.DARK_AQUA + player.getWorld().getName());
-                sender.sendMessage(ChatColor.GRAY + "Type: " + ChatColor.DARK_AQUA
-                        + player.getWorld().getWorldType().getName());
+                sender.sendMessage(
+                        ChatColor.GRAY + "Type: " + ChatColor.DARK_AQUA + player.getWorld().getWorldType().getName());
                 sender.sendMessage(ChatColor.GRAY + "Environment: " + ChatColor.DARK_AQUA
                         + player.getWorld().getEnvironment().toString());
                 sender.sendMessage(ChatColor.GRAY + "Seed: " + ChatColor.DARK_AQUA + player.getWorld().getSeed());
