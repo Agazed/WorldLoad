@@ -133,9 +133,7 @@ public class WorldLoad extends JavaPlugin {
             }
             if (args.length == 2) {
                 if (flatworldlist.contains(args[1]) || worldlist.contains(args[1])
-                        || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)
-                        || getServer().getWorld(args[1]) == getServer().getWorlds().get(1)
-                        || getServer().getWorld(args[1]) == getServer().getWorlds().get(2)) {
+                        || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
                     sender.sendMessage(ChatColor.RED + "World already exists!");
                     return true;
                 }
@@ -159,9 +157,7 @@ public class WorldLoad extends JavaPlugin {
                     return true;
                 }
                 if (flatworldlist.contains(args[1]) || worldlist.contains(args[1])
-                        || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)
-                        || getServer().getWorld(args[1]) == getServer().getWorlds().get(1)
-                        || getServer().getWorld(args[1]) == getServer().getWorlds().get(2)) {
+                        || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
                     sender.sendMessage(ChatColor.RED + "World already exists!");
                     return true;
                 }
@@ -251,9 +247,7 @@ public class WorldLoad extends JavaPlugin {
                 sender.sendMessage(ChatColor.GREEN + "Successfully deleted unloaded world \"" + args[1] + "\"");
                 return true;
             }
-            if (getServer().getWorld(args[1]) == getServer().getWorlds().get(0)
-                    || getServer().getWorld(args[1]) == getServer().getWorlds().get(1)
-                    || getServer().getWorld(args[1]) == getServer().getWorlds().get(2)) {
+            if (getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
                 sender.sendMessage(ChatColor.RED + "Cannot delete a main world!");
                 return true;
             }
@@ -296,9 +290,7 @@ public class WorldLoad extends JavaPlugin {
                 return true;
             }
             if (worldlist.contains(args[1]) || flatworldlist.contains(args[1]) || worldlistloaded.contains(args[1])
-                    || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)
-                    || getServer().getWorld(args[1]) == getServer().getWorlds().get(1)
-                    || getServer().getWorld(args[1]) == getServer().getWorlds().get(2)) {
+                    || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
                 sender.sendMessage(ChatColor.RED + "World already exists!");
                 return true;
             }
@@ -331,9 +323,7 @@ public class WorldLoad extends JavaPlugin {
                 sender.sendMessage(ChatColor.RED + "World does not exist!");
                 return true;
             }
-            if (getServer().getWorld(args[1]) == getServer().getWorlds().get(0)
-                    || getServer().getWorld(args[1]) == getServer().getWorlds().get(1)
-                    || getServer().getWorld(args[1]) == getServer().getWorlds().get(2)) {
+            if (getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
                 sender.sendMessage(ChatColor.RED + "Cannot unload a main world!");
                 return true;
             }
