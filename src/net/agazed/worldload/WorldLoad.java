@@ -83,7 +83,7 @@ public class WorldLoad extends JavaPlugin {
                         + ChatColor.WHITE + "- Load a world one time");
                 sender.sendMessage(ChatColor.DARK_AQUA + "/worldload " + ChatColor.GRAY + "unload <world> "
                         + ChatColor.WHITE + "- Unload a world one time");
-                sender.sendMessage(ChatColor.DARK_AQUA + "/worldload " + ChatColor.GRAY + "stats [world]"
+                sender.sendMessage(ChatColor.DARK_AQUA + "/worldload " + ChatColor.GRAY + "stats [world] "
                         + ChatColor.WHITE + "- Get world statistics");
                 sender.sendMessage(ChatColor.DARK_AQUA + "/worldload " + ChatColor.GRAY + "list " + ChatColor.WHITE
                         + "- List your worlds");
