@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Difficulty;
 import org.bukkit.Location;
+import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.command.Command;
@@ -17,29 +19,38 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WorldLoad extends JavaPlugin {
 
-    List<String> worldlist = getConfig().getStringList("worldlist");
-    List<String> flatworldlist = getConfig().getStringList("flatworldlist");
+    List<String> worldlist = new ArrayList<String>();
     List<String> worldlistloaded = new ArrayList<String>();
     List<String> worldlistunloaded = new ArrayList<String>();
 
     @Override
     public void onEnable() {
-        getConfig().options().copyDefaults(true);
-        saveConfig();
-        for (String world : worldlist) {
-            getLogger().info("Preparing level \"" + world + "\"");
-            new WorldCreator(world).createWorld();
-        }
-        for (String flatworld : flatworldlist) {
-            getLogger().info("Preparing flat level \"" + flatworld + "\"");
-            new WorldCreator(flatworld).type(WorldType.FLAT)
-                    .generateStructures(getConfig().getBoolean("generateStructuresInFlatWorlds")).createWorld();
-        }
         try {
             Metrics metrics = new Metrics(this);
             metrics.start();
         } catch (IOException e) {
-            // Failed to submit the stats :-(
+            System.out.println("Failed to submit metrics");
+        }
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+        if (getConfig().getConfigurationSection("worlds") != null) {
+            for (String world : getConfig().getConfigurationSection("worlds").getKeys(false)) {
+                getLogger().info("Preparing level \"" + world + "\"");
+                String type = getConfig().getString("worlds." + world + ".type");
+                String environment = getConfig().getString("worlds." + world + ".environment");
+                Boolean pvp = getConfig().getBoolean("worlds." + world + ".pvp");
+                String difficulty = getConfig().getString("worlds." + world + ".difficulty");
+                Long seed = getConfig().getLong("worlds." + world + ".seed");
+                Boolean structures = getConfig().getBoolean("worlds." + world + ".generate-structures");
+                Boolean animals = getConfig().getBoolean("worlds." + world + ".spawn-animals");
+                Boolean monsters = getConfig().getBoolean("worlds." + world + ".spawn-monsters");
+                new WorldCreator(world).type(WorldType.valueOf(type)).environment(Environment.valueOf(environment))
+                        .seed(seed).generateStructures(structures).createWorld();
+                getServer().getWorld(world).setPVP(pvp);
+                getServer().getWorld(world).setDifficulty(Difficulty.valueOf(difficulty));
+                getServer().getWorld(world).setSpawnFlags(monsters, animals);
+                worldlist.add(world);
+            }
         }
     }
 
@@ -132,47 +143,51 @@ public class WorldLoad extends JavaPlugin {
                 return true;
             }
             if (args.length == 2) {
-                if (flatworldlist.contains(args[1]) || worldlist.contains(args[1])
-                        || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
+                if (worldlist.contains(args[1]) || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
                     sender.sendMessage(ChatColor.RED + "World already exists!");
                     return true;
                 }
-                if (worldlistloaded.contains(args[1])) {
+                if (worldlistloaded.contains(args[1]))
                     worldlistloaded.remove(args[1]);
-                }
-                if (worldlistunloaded.contains(args[1])) {
+                if (worldlistunloaded.contains(args[1]))
                     worldlistunloaded.remove(args[1]);
-                }
                 sender.sendMessage(ChatColor.GREEN + "Preparing level \"" + args[1] + "\"");
                 worldlist.add(args[1]);
-                getConfig().set("worldlist", worldlist);
+                getConfig().set("worlds." + args[1] + ".type", "NORMAL");
+                getConfig().set("worlds." + args[1] + ".environment", "NORMAL");
+                getConfig().set("worlds." + args[1] + ".pvp", "true");
+                getConfig().set("worlds." + args[1] + ".difficulty", "NORMAL");
+                getConfig().set("worlds." + args[1] + ".seed", "");
+                getConfig().set("worlds." + args[1] + ".generate-structures", "true");
+                getConfig().set("worlds." + args[1] + ".spawn-animals", "true");
+                getConfig().set("worlds." + args[1] + ".spawn-monsters", "true");
                 saveConfig();
                 new WorldCreator(args[1]).createWorld();
                 sender.sendMessage(ChatColor.GREEN + "Successfully created world \"" + args[1] + "\"");
                 return true;
             }
             if (args[2].equalsIgnoreCase("-flat")) {
-                if (!sender.hasPermission("worldload.create.flat")) {
-                    sender.sendMessage(ChatColor.RED + "No permission!");
-                    return true;
-                }
-                if (flatworldlist.contains(args[1]) || worldlist.contains(args[1])
-                        || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
+                if (worldlist.contains(args[1]) || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
                     sender.sendMessage(ChatColor.RED + "World already exists!");
                     return true;
                 }
-                if (worldlistloaded.contains(args[1])) {
+                if (worldlistloaded.contains(args[1]))
                     worldlistloaded.remove(args[1]);
-                }
-                if (worldlistunloaded.contains(args[1])) {
+                if (worldlistunloaded.contains(args[1]))
                     worldlistunloaded.remove(args[1]);
-                }
                 sender.sendMessage(ChatColor.GREEN + "Preparing flat level \"" + args[1] + "\"");
-                flatworldlist.add(args[1]);
-                getConfig().set("flatworldlist", flatworldlist);
+                worldlist.add(args[1]);
+                getConfig().set("worlds." + args[1] + ".type", "FLAT");
+                getConfig().set("worlds." + args[1] + ".environment", "NORMAL");
+                getConfig().set("worlds." + args[1] + ".pvp", "true");
+                getConfig().set("worlds." + args[1] + ".difficulty", "NORMAL");
+                getConfig().set("worlds." + args[1] + ".seed", "");
+                getConfig().set("worlds." + args[1] + ".generate-structures", "true");
+                getConfig().set("worlds." + args[1] + ".spawn-animals", "true");
+                getConfig().set("worlds." + args[1] + ".spawn-monsters", "true");
                 saveConfig();
-                new WorldCreator(args[1]).type(WorldType.FLAT)
-                        .generateStructures(getConfig().getBoolean("generateStructuresInFlatWorlds")).createWorld();
+                new WorldCreator(args[1]).type(WorldType.FLAT).createWorld();
+                getConfig().set("worlds." + args[1] + ".seed", getServer().getWorld(args[1]).getSeed());
                 sender.sendMessage(ChatColor.GREEN + "Successfully created flat world \"" + args[1] + "\"");
                 return true;
             }
@@ -189,13 +204,13 @@ public class WorldLoad extends JavaPlugin {
                 sender.sendMessage(ChatColor.RED + "Correct usage: /worldload remove <world>");
                 return true;
             }
-            if (!worldlist.contains(args[1]) && !flatworldlist.contains(args[1])) {
+            if (!worldlist.contains(args[1])) {
                 sender.sendMessage(ChatColor.RED + "World is not on the world list!");
                 return true;
             }
             if (worldlist.contains(args[1])) {
                 worldlist.remove(args[1]);
-                getConfig().set("worldlist", worldlist);
+                getConfig().set("worlds." + args[1], null);
                 saveConfig();
                 if (getServer().getWorld(args[1]) == null) {
                     sender.sendMessage(ChatColor.GREEN + "Successfully removed unloaded world \"" + args[1]
@@ -205,20 +220,6 @@ public class WorldLoad extends JavaPlugin {
                 worldlistloaded.add(args[1]);
                 sender.sendMessage(
                         ChatColor.GREEN + "Successfully removed world \"" + args[1] + "\" from the world list.");
-                return true;
-            }
-            if (flatworldlist.contains(args[1])) {
-                flatworldlist.remove(args[1]);
-                getConfig().set("flatworldlist", flatworldlist);
-                saveConfig();
-                if (getServer().getWorld(args[1]) == null) {
-                    sender.sendMessage(ChatColor.GREEN + "Successfully removed unloaded flat world \"" + args[1]
-                            + "\" from the flat world list.");
-                    return true;
-                }
-                worldlistloaded.add(args[1]);
-                sender.sendMessage(ChatColor.GREEN + "Successfully removed flat world \"" + args[1]
-                        + "\" from the flat world list.");
                 return true;
             }
         }
@@ -240,9 +241,8 @@ public class WorldLoad extends JavaPlugin {
                     sender.sendMessage(ChatColor.RED + "World does not exist!");
                     return true;
                 }
-                if (worldlistunloaded.contains(args[1])) {
+                if (worldlistunloaded.contains(args[1]))
                     worldlistunloaded.remove(args[1]);
-                }
                 delete(unloaded);
                 sender.sendMessage(ChatColor.GREEN + "Successfully deleted unloaded world \"" + args[1] + "\"");
                 return true;
@@ -255,22 +255,14 @@ public class WorldLoad extends JavaPlugin {
                 sender.sendMessage(ChatColor.RED + "Cannot delete a world with players inside!");
                 return true;
             }
-            if (worldlist.contains(args[1])) {
+            if (worldlist.contains(args[1]))
                 worldlist.remove(args[1]);
-                getConfig().set("worldlist", worldlist);
-                saveConfig();
-            }
-            if (flatworldlist.contains(args[1])) {
-                flatworldlist.remove(args[1]);
-                getConfig().set("flatworldlist", flatworldlist);
-                saveConfig();
-            }
-            if (worldlistloaded.contains(args[1])) {
+            getConfig().set("worlds." + args[1], null);
+            saveConfig();
+            if (worldlistloaded.contains(args[1]))
                 worldlistloaded.remove(args[1]);
-            }
-            if (worldlistunloaded.contains(args[1])) {
+            if (worldlistunloaded.contains(args[1]))
                 worldlistunloaded.remove(args[1]);
-            }
             File world = getServer().getWorld(args[1]).getWorldFolder();
             getServer().unloadWorld(args[1], true);
             delete(world);
@@ -289,14 +281,13 @@ public class WorldLoad extends JavaPlugin {
                 sender.sendMessage(ChatColor.RED + "Correct usage: /worldload load <world>");
                 return true;
             }
-            if (worldlist.contains(args[1]) || flatworldlist.contains(args[1]) || worldlistloaded.contains(args[1])
+            if (worldlist.contains(args[1]) || worldlistloaded.contains(args[1])
                     || getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
                 sender.sendMessage(ChatColor.RED + "World already exists!");
                 return true;
             }
-            if (worldlistunloaded.contains(args[1])) {
+            if (worldlistunloaded.contains(args[1]))
                 worldlistunloaded.remove(args[1]);
-            }
             worldlistloaded.add(args[1]);
             sender.sendMessage(ChatColor.GREEN + "Loading level \"" + args[1] + "\"");
             new WorldCreator(args[1]).createWorld();
@@ -331,12 +322,12 @@ public class WorldLoad extends JavaPlugin {
                 sender.sendMessage(ChatColor.RED + "Cannot unload a world with players inside!");
                 return true;
             }
-            if (worldlistloaded.contains(args[1])) {
+            if (worldlist.contains(args[1]))
+                worldlist.remove(args[1]);
+            if (worldlistloaded.contains(args[1]))
                 worldlistloaded.remove(args[1]);
-            }
-            if (!worldlistunloaded.contains(args[1])) {
+            if (!worldlistunloaded.contains(args[1]))
                 worldlistunloaded.add(args[1]);
-            }
             getServer().unloadWorld(args[1], true);
             sender.sendMessage(ChatColor.GREEN + "Successfully unloaded world \"" + args[1] + "\"");
             return true;
@@ -431,8 +422,7 @@ public class WorldLoad extends JavaPlugin {
             if (args.length == 1) {
                 sender.sendMessage(
                         "----- " + ChatColor.DARK_AQUA + ChatColor.BOLD + "World List " + ChatColor.WHITE + "-----");
-                sender.sendMessage(ChatColor.DARK_AQUA + "Normal: " + ChatColor.GRAY + worldlist.toString());
-                sender.sendMessage(ChatColor.DARK_AQUA + "Flat: " + ChatColor.GRAY + flatworldlist.toString());
+                sender.sendMessage(ChatColor.DARK_AQUA + "Created: " + ChatColor.GRAY + worldlist.toString());
                 sender.sendMessage(ChatColor.DARK_AQUA + "Loaded: " + ChatColor.GRAY + worldlistloaded.toString());
                 sender.sendMessage(ChatColor.DARK_AQUA + "Unloaded: " + ChatColor.GRAY + worldlistunloaded.toString());
                 return true;
@@ -448,22 +438,25 @@ public class WorldLoad extends JavaPlugin {
             }
             if (args.length == 1) {
                 reloadConfig();
-                List<String> worldlist = getConfig().getStringList("worldlist");
-                List<String> flatworldlist = getConfig().getStringList("flatworldlist");
-                for (String world : worldlist) {
-                    if (getServer().getWorld(world) == null) {
-                        sender.sendMessage(ChatColor.GREEN + "Preparing level \"" + world + "\"");
-                        new WorldCreator(world).createWorld();
-                        sender.sendMessage(ChatColor.GREEN + "Successfully created world \"" + world + "\"");
-                    }
-                }
-                for (String flatworld : flatworldlist) {
-                    if (getServer().getWorld(flatworld) == null) {
-                        sender.sendMessage(ChatColor.GREEN + "Preparing level \"" + flatworld + "\"");
-                        new WorldCreator(flatworld).type(WorldType.FLAT)
-                                .generateStructures(getConfig().getBoolean("generateStructuresInFlatWorlds"))
+                if (getConfig().getConfigurationSection("worlds") != null) {
+                    for (String world : getConfig().getConfigurationSection("worlds").getKeys(false)) {
+                        getLogger().info("Preparing level \"" + world + "\"");
+                        String type = getConfig().getString("worlds." + world + ".type");
+                        String environment = getConfig().getString("worlds." + world + ".environment");
+                        Boolean pvp = getConfig().getBoolean("worlds." + world + ".pvp");
+                        String difficulty = getConfig().getString("worlds." + world + ".difficulty");
+                        Long seed = getConfig().getLong("worlds." + world + ".seed");
+                        Boolean structures = getConfig().getBoolean("worlds." + world + ".generate-structures");
+                        Boolean animals = getConfig().getBoolean("worlds." + world + ".spawn-animals");
+                        Boolean monsters = getConfig().getBoolean("worlds." + world + ".spawn-monsters");
+                        new WorldCreator(world).type(WorldType.valueOf(type))
+                                .environment(Environment.valueOf(environment)).seed(seed).generateStructures(structures)
                                 .createWorld();
-                        sender.sendMessage(ChatColor.GREEN + "Successfully created flat world \"" + flatworld + "\"");
+                        getServer().getWorld(world).setPVP(pvp);
+                        getServer().getWorld(world).setDifficulty(Difficulty.valueOf(difficulty));
+                        getServer().getWorld(world).setSpawnFlags(monsters, animals);
+                        if (!worldlist.contains(world))
+                            worldlist.add(world);
                     }
                 }
                 sender.sendMessage(ChatColor.GREEN + "Successfully reloaded config!");

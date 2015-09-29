@@ -3,7 +3,7 @@ author: Agazed
 description: Load or generate a world
 website: http://www.skylair.net
 main: net.agazed.worldload.WorldLoad
-version: 2.2
+version: 3.0
 commands:
   worldload:
     description: Main command for WorldLoad
@@ -17,9 +17,6 @@ permissions:
         default: op
     worldload.create:
         description: Create a world
-        default: op
-    worldload.create.flat:
-        description: Create a flat world
         default: op
     worldload.remove:
         description: Remove a world from the config

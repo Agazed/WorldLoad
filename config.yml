@@ -1,14 +1,10 @@
-# Put the world names you want to load or generate below.
 # Made with love by Agazed :)
 # Official server: mc.skylair.net
-worldlist:
-#- worldname
-#- worldname2
-#- worldname3
-flatworldlist:
-#- flatworldname
-#- flatworldname2
-#- flatworldname3
 
-# Do you want villages to generate in flat worlds?
-generateStructuresInFlatWorlds: false
+# -------------------------- Possible values -------------------------- #
+# type: NORMAL, FLAT, LARGE_BIOMES, AMPLIFIED, CUSTOMIZED, VERSION_1_1
+# environment: NORMAL, NETHER, THE_END
+# difficulty: PEACEFUL, EASY, NORMAL, HARD
+# --------------------------------------------------------------------- #
+
+worlds: {}
