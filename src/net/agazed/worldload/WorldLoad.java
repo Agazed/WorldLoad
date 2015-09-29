@@ -29,7 +29,7 @@ public class WorldLoad extends JavaPlugin {
             Metrics metrics = new Metrics(this);
             metrics.start();
         } catch (IOException e) {
-            System.out.println("Failed to submit metrics");
+            getLogger().info("Failed to submit metrics!");
         }
         getConfig().options().copyDefaults(true);
         saveConfig();
@@ -49,23 +49,10 @@ public class WorldLoad extends JavaPlugin {
                 getServer().getWorld(world).setPVP(pvp);
                 getServer().getWorld(world).setDifficulty(Difficulty.valueOf(difficulty));
                 getServer().getWorld(world).setSpawnFlags(monsters, animals);
-                worldlist.add(world);
+                if (!worldlist.contains(world))
+                    worldlist.add(world);
             }
         }
-    }
-
-    public boolean delete(File path) {
-        if (path.exists()) {
-            File files[] = path.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory()) {
-                    delete(files[i]);
-                } else {
-                    files[i].delete();
-                }
-            }
-        }
-        return (path.delete());
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -120,6 +107,10 @@ public class WorldLoad extends JavaPlugin {
                 return true;
             }
             if (getServer().getWorld(args[1]) == null) {
+                if (worldlistunloaded.contains(args[1])) {
+                    sender.sendMessage(ChatColor.RED + "World is unloaded!");
+                    return true;
+                }
                 sender.sendMessage(ChatColor.RED + "World does not exist!");
                 return true;
             }
@@ -152,7 +143,8 @@ public class WorldLoad extends JavaPlugin {
                 if (worldlistunloaded.contains(args[1]))
                     worldlistunloaded.remove(args[1]);
                 sender.sendMessage(ChatColor.GREEN + "Preparing level \"" + args[1] + "\"");
-                worldlist.add(args[1]);
+                if (!worldlist.contains(args[1]))
+                    worldlist.add(args[1]);
                 getConfig().set("worlds." + args[1] + ".type", "NORMAL");
                 getConfig().set("worlds." + args[1] + ".environment", "NORMAL");
                 getConfig().set("worlds." + args[1] + ".pvp", "true");
@@ -176,7 +168,8 @@ public class WorldLoad extends JavaPlugin {
                 if (worldlistunloaded.contains(args[1]))
                     worldlistunloaded.remove(args[1]);
                 sender.sendMessage(ChatColor.GREEN + "Preparing flat level \"" + args[1] + "\"");
-                worldlist.add(args[1]);
+                if (!worldlist.contains(args[1]))
+                    worldlist.add(args[1]);
                 getConfig().set("worlds." + args[1] + ".type", "FLAT");
                 getConfig().set("worlds." + args[1] + ".environment", "NORMAL");
                 getConfig().set("worlds." + args[1] + ".pvp", "true");
@@ -204,7 +197,7 @@ public class WorldLoad extends JavaPlugin {
                 return true;
             }
             if (!worldlist.contains(args[1])) {
-                sender.sendMessage(ChatColor.RED + "World is not on the world list!");
+                sender.sendMessage(ChatColor.RED + "World does not exist!");
                 return true;
             }
             if (worldlist.contains(args[1])) {
@@ -240,6 +233,10 @@ public class WorldLoad extends JavaPlugin {
                     sender.sendMessage(ChatColor.RED + "World does not exist!");
                     return true;
                 }
+                if (worldlist.contains(args[1]))
+                    worldlist.remove(args[1]);
+                if (worldlistloaded.contains(args[1]))
+                    worldlistloaded.remove(args[1]);
                 if (worldlistunloaded.contains(args[1]))
                     worldlistunloaded.remove(args[1]);
                 delete(unloaded);
@@ -256,12 +253,12 @@ public class WorldLoad extends JavaPlugin {
             }
             if (worldlist.contains(args[1]))
                 worldlist.remove(args[1]);
-            getConfig().set("worlds." + args[1], null);
-            saveConfig();
             if (worldlistloaded.contains(args[1]))
                 worldlistloaded.remove(args[1]);
             if (worldlistunloaded.contains(args[1]))
                 worldlistunloaded.remove(args[1]);
+            getConfig().set("worlds." + args[1], null);
+            saveConfig();
             File world = getServer().getWorld(args[1]).getWorldFolder();
             getServer().unloadWorld(args[1], true);
             delete(world);
@@ -464,5 +461,19 @@ public class WorldLoad extends JavaPlugin {
         }
         sender.sendMessage(ChatColor.RED + "Unknown argument!");
         return true;
+    }
+
+    public boolean delete(File path) {
+        if (path.exists()) {
+            File files[] = path.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    delete(files[i]);
+                } else {
+                    files[i].delete();
+                }
+            }
+        }
+        return (path.delete());
     }
 }
