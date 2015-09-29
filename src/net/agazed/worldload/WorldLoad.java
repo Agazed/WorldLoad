@@ -187,7 +187,6 @@ public class WorldLoad extends JavaPlugin {
                 getConfig().set("worlds." + args[1] + ".spawn-monsters", "true");
                 saveConfig();
                 new WorldCreator(args[1]).type(WorldType.FLAT).createWorld();
-                getConfig().set("worlds." + args[1] + ".seed", getServer().getWorld(args[1]).getSeed());
                 sender.sendMessage(ChatColor.GREEN + "Successfully created flat world \"" + args[1] + "\"");
                 return true;
             }
