@@ -15,7 +15,7 @@ Instructions:
 
 * Drop into plugins folder
 * Start your server so the config file generates
-* Configure as you please
+* Begin creating worlds!
 
 Commands:
 
@@ -27,7 +27,6 @@ Permissions:
 * worldload.help
 * worldload.tp
 * worldload.create
-* worldload.create.flat
 * worldload.remove
 * worldload.delete
 * worldload.load
