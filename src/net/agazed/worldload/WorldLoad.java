@@ -13,7 +13,6 @@ import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -94,7 +93,7 @@ public class WorldLoad extends JavaPlugin {
         // WorldLoad TP
 
         if (args[0].equalsIgnoreCase("tp")) {
-            if (sender instanceof ConsoleCommandSender) {
+            if (!(sender instanceof Player)) {
                 getServer().getConsoleSender().sendMessage(ChatColor.RED + "Command can only be run as a player!");
                 return true;
             }
@@ -337,7 +336,7 @@ public class WorldLoad extends JavaPlugin {
                 return true;
             }
             if (args.length == 1) {
-                if (sender instanceof ConsoleCommandSender) {
+                if (!(sender instanceof Player)) {
                     getServer().getConsoleSender()
                             .sendMessage(ChatColor.RED + "Correct usage: /worldload stats [world]");
                     return true;
