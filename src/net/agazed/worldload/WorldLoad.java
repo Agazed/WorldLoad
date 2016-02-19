@@ -244,7 +244,7 @@ public class WorldLoad extends JavaPlugin {
                 return true;
             }
             if (getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
-                sender.sendMessage(ChatColor.RED + "Cannot delete a main world!");
+                sender.sendMessage(ChatColor.RED + "Cannot delete the main world!");
                 return true;
             }
             if (getServer().getWorld(args[1]).getPlayers().size() > 0) {
@@ -311,7 +311,7 @@ public class WorldLoad extends JavaPlugin {
                 return true;
             }
             if (getServer().getWorld(args[1]) == getServer().getWorlds().get(0)) {
-                sender.sendMessage(ChatColor.RED + "Cannot unload a main world!");
+                sender.sendMessage(ChatColor.RED + "Cannot unload the main world!");
                 return true;
             }
             if (getServer().getWorld(args[1]).getPlayers().size() > 0) {
