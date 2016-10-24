@@ -115,9 +115,7 @@ public class WorldLoad extends JavaPlugin {
                 player.sendMessage(ChatColor.RED + "World does not exist!");
                 return true;
             }
-            Location loc = new Location(getServer().getWorld(args[1]), 0,
-                    getServer().getWorld(args[1]).getHighestBlockYAt(0, 0), 0);
-            player.teleport(loc);
+            player.teleport(getServer().getWorld(args[1]).getSpawnLocation());
             player.sendMessage(ChatColor.GREEN + "Teleported to world \"" + args[1] + "\"");
             return true;
         }
